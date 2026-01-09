@@ -9,9 +9,10 @@ export default function CTA() {
       </h2>
 
       {/* Subtitle */}
-      <p className="text-base opacity-80 mb-10 max-w-[400px] mx-auto">
-        Takes 2 minutes. We&apos;ll be in touch within a week if you&apos;re selected.
-      </p>
+      <div className="text-base opacity-80 mb-10 max-w-[400px] mx-auto">
+        <p>Worst case: a good story.</p>
+        <p>Best case: we don&apos;t need to say it.</p>
+      </div>
 
       {/* Button */}
       <Link

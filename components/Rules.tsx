@@ -10,7 +10,7 @@ export default function Rules() {
     <section className="py-24 md:py-28 px-6 bg-ink text-cream text-center">
       {/* Title */}
       <h2 className="font-display text-[clamp(1.4rem,4vw,1.8rem)] font-normal tracking-[0.05em] mb-12 opacity-70">
-        The Rules
+        The rules are simple.
       </h2>
 
       {/* Rules list with strikethrough */}
@@ -27,7 +27,7 @@ export default function Rules() {
 
       {/* Final line */}
       <p className="font-display text-[clamp(1.3rem,4vw,1.6rem)] italic text-gold mt-4">
-        Only letters. Only patience. Only trust.
+        For ten days, letters are all you get.
       </p>
     </section>
   )

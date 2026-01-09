@@ -8,7 +8,7 @@ export default function WhoSection() {
         </h2>
 
         {/* Requirements list */}
-        <div className="flex flex-col gap-4 mb-8">
+        <div className="flex flex-col gap-4 mb-10">
           <p className="font-display text-[1.15rem] text-ink-light leading-relaxed">
             Single. NYC-based. 21–40ish.
           </p>
@@ -20,9 +20,9 @@ export default function WhoSection() {
           </p>
         </div>
 
-        {/* Aside */}
-        <p className="text-[0.9rem] text-dusty-rose italic mt-6">
-          Romantics who&apos;ve been burned by apps welcome.
+        {/* Call to action line */}
+        <p className="font-body text-[0.95rem] text-ink-light italic leading-relaxed">
+          If you&apos;ve ever said &quot;I wish dating felt more real&quot;—here&apos;s your chance to find out if you meant it.
         </p>
       </div>
     </section>
