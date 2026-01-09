@@ -83,15 +83,11 @@ export default function ApplicationForm() {
     }
   }
 
-  const inputClasses = "w-full p-4 bg-white/10 backdrop-blur-sm rounded-lg text-white placeholder-white/50 border border-white/20 focus:border-lime transition-colors"
-  const labelClasses = "block text-sm font-medium text-white/80 mb-2"
-  const errorClasses = "text-magenta text-sm mt-1"
-
   if (isSubmitted) {
     return (
-      <section id="apply" className="py-20 px-4 bg-deep-purple/50" ref={ref}>
+      <section id="apply" className="py-32 md:py-40 bg-cream" ref={ref}>
         <motion.div
-          className="max-w-md mx-auto text-center"
+          className="max-w-md mx-auto text-center px-6"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
@@ -106,8 +102,8 @@ export default function ApplicationForm() {
           >
             ✉️
           </motion.div>
-          <h2 className="font-display text-4xl mb-4 text-pink">Got it.</h2>
-          <p className="text-white/70">
+          <h2 className="font-display text-4xl md:text-5xl mb-4 text-burgundy">Got it.</h2>
+          <p className="font-body text-warm-black/70">
             We&apos;ll be in touch within 48 hours if you&apos;re moving forward.
           </p>
         </motion.div>
@@ -116,191 +112,221 @@ export default function ApplicationForm() {
   }
 
   return (
-    <section id="apply" className="py-20 px-4 bg-deep-purple/50" ref={ref}>
-      <div className="max-w-2xl mx-auto">
+    <section id="apply" className="py-32 md:py-40 bg-cream" ref={ref}>
+      <div className="max-w-2xl mx-auto px-6 md:px-12 lg:px-20">
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
         >
-          <h2 className="font-display text-4xl md:text-5xl mb-4 text-pink">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mb-4 text-warm-black">
             Think you could do it?
           </h2>
-          <p className="text-lg text-white/70">
+          <p className="font-body text-lg text-warm-black/60">
             We&apos;re selecting two people for our first experiment.
           </p>
         </motion.div>
 
         <motion.form
           onSubmit={handleSubmit}
-          className="space-y-6"
+          className="space-y-10"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2 }}
         >
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className={labelClasses}>Name *</label>
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* Name */}
+            <div className="input-underline">
+              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+                Name *
+              </label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={inputClasses}
+                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
                 placeholder="Your name"
               />
-              {errors.name && <p className={errorClasses}>{errors.name}</p>}
+              {errors.name && <p className="text-burgundy text-sm mt-2">{errors.name}</p>}
             </div>
 
-            <div>
-              <label className={labelClasses}>Age *</label>
+            {/* Age */}
+            <div className="input-underline">
+              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+                Age *
+              </label>
               <input
                 type="number"
                 name="age"
                 value={formData.age}
                 onChange={handleChange}
-                className={inputClasses}
+                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
                 placeholder="21-45"
                 min="21"
                 max="45"
               />
-              {errors.age && <p className={errorClasses}>{errors.age}</p>}
+              {errors.age && <p className="text-burgundy text-sm mt-2">{errors.age}</p>}
             </div>
           </div>
 
-          <div>
-            <label className={labelClasses}>Pronouns</label>
+          {/* Pronouns */}
+          <div className="input-underline">
+            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+              Pronouns
+            </label>
             <input
               type="text"
               name="pronouns"
               value={formData.pronouns}
               onChange={handleChange}
-              className={inputClasses}
+              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
               placeholder="e.g., she/her, he/him, they/them"
             />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className={labelClasses}>Email *</label>
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* Email */}
+            <div className="input-underline">
+              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+                Email *
+              </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={inputClasses}
+                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
                 placeholder="your@email.com"
               />
-              {errors.email && <p className={errorClasses}>{errors.email}</p>}
+              {errors.email && <p className="text-burgundy text-sm mt-2">{errors.email}</p>}
             </div>
 
-            <div>
-              <label className={labelClasses}>Phone *</label>
+            {/* Phone */}
+            <div className="input-underline">
+              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+                Phone *
+              </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className={inputClasses}
+                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
                 placeholder="(555) 555-5555"
               />
-              {errors.phone && <p className={errorClasses}>{errors.phone}</p>}
+              {errors.phone && <p className="text-burgundy text-sm mt-2">{errors.phone}</p>}
             </div>
           </div>
 
-          <div>
-            <label className={labelClasses}>What do you do? *</label>
+          {/* Occupation */}
+          <div className="input-underline">
+            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+              What do you do? *
+            </label>
             <input
               type="text"
               name="occupation"
               value={formData.occupation}
               onChange={handleChange}
-              className={inputClasses}
+              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
               placeholder="Your job, passion, or how you spend your days"
             />
-            {errors.occupation && <p className={errorClasses}>{errors.occupation}</p>}
+            {errors.occupation && <p className="text-burgundy text-sm mt-2">{errors.occupation}</p>}
           </div>
 
-          <div>
-            <label className={labelClasses}>Why does this interest you? *</label>
+          {/* Interest */}
+          <div className="input-underline">
+            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+              Why does this interest you? *
+            </label>
             <textarea
               name="interest"
               value={formData.interest}
               onChange={handleChange}
-              className={`${inputClasses} h-32 resize-none`}
+              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30 resize-none h-32"
               placeholder="Be honest. We're looking for genuine people."
               maxLength={500}
             />
-            <div className="flex justify-between">
-              {errors.interest && <p className={errorClasses}>{errors.interest}</p>}
-              <p className="text-right text-sm text-white/50 ml-auto">
+            <div className="flex justify-between mt-2">
+              {errors.interest && <p className="text-burgundy text-sm">{errors.interest}</p>}
+              <p className="text-right text-sm text-dusty-rose ml-auto">
                 {formData.interest.length}/500
               </p>
             </div>
           </div>
 
+          {/* Availability */}
           <div>
-            <label className={labelClasses}>Are you available for filming Feb 10-14, 2026? *</label>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2 cursor-pointer">
+            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-4">
+              Are you available for filming Feb 10-14, 2026? *
+            </label>
+            <div className="flex gap-8">
+              <label className="flex items-center gap-3 cursor-pointer group">
                 <input
                   type="radio"
                   name="available"
                   value="yes"
                   checked={formData.available === 'yes'}
                   onChange={handleChange}
-                  className="w-4 h-4 accent-lime"
+                  className="w-5 h-5 accent-burgundy"
                 />
-                <span>Yes</span>
+                <span className="font-body text-warm-black group-hover:text-burgundy transition-colors">Yes</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-3 cursor-pointer group">
                 <input
                   type="radio"
                   name="available"
                   value="no"
                   checked={formData.available === 'no'}
                   onChange={handleChange}
-                  className="w-4 h-4 accent-lime"
+                  className="w-5 h-5 accent-burgundy"
                 />
-                <span>No</span>
+                <span className="font-body text-warm-black group-hover:text-burgundy transition-colors">No</span>
               </label>
             </div>
-            {errors.available && <p className={errorClasses}>{errors.available}</p>}
+            {errors.available && <p className="text-burgundy text-sm mt-2">{errors.available}</p>}
           </div>
 
-          <div>
-            <label className={labelClasses}>Instagram handle (optional)</label>
+          {/* Instagram */}
+          <div className="input-underline">
+            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+              Instagram handle (optional)
+            </label>
             <input
               type="text"
               name="instagram"
               value={formData.instagram}
               onChange={handleChange}
-              className={inputClasses}
+              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
               placeholder="@yourusername"
             />
           </div>
 
-          <motion.button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-lime w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-            whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-          >
-            {isSubmitting ? (
-              <span className="flex items-center justify-center gap-2">
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                >
-                  ✉️
-                </motion.span>
-                Sending...
-              </span>
-            ) : (
-              'Send It'
-            )}
-          </motion.button>
+          {/* Submit Button */}
+          <div className="pt-8">
+            <motion.button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+              whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-3">
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1 }}
+                  >
+                    ✉️
+                  </motion.span>
+                  Sending...
+                </span>
+              ) : (
+                'Send It'
+              )}
+            </motion.button>
+          </div>
         </motion.form>
       </div>
     </section>

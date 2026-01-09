@@ -33,16 +33,19 @@ export default function EnvelopeAnimation({ onComplete }: EnvelopeAnimationProps
     <AnimatePresence>
       {phase !== 'done' && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-deep-purple via-purple to-magenta cursor-pointer"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-warm-black cursor-pointer"
           onClick={handleSkip}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5 }}
         >
+          {/* Film grain overlay */}
+          <div className="absolute inset-0 film-grain opacity-20" />
+
           {/* Envelope container */}
           <div className="relative w-80 h-56 md:w-96 md:h-64">
             {/* Envelope back */}
             <motion.div
-              className="absolute inset-0 bg-cream rounded-lg shadow-2xl"
+              className="absolute inset-0 bg-cream rounded shadow-2xl"
               style={{ transformStyle: 'preserve-3d' }}
             />
 
@@ -59,7 +62,7 @@ export default function EnvelopeAnimation({ onComplete }: EnvelopeAnimationProps
                   transition={{ duration: 0.5, ease: 'easeOut' }}
                 >
                   <motion.h1
-                    className="font-script text-4xl md:text-5xl text-purple"
+                    className="font-script text-4xl md:text-5xl text-burgundy"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
@@ -72,7 +75,7 @@ export default function EnvelopeAnimation({ onComplete }: EnvelopeAnimationProps
 
             {/* Envelope front bottom */}
             <motion.div
-              className="absolute bottom-0 left-0 right-0 h-1/2 bg-pink rounded-b-lg"
+              className="absolute bottom-0 left-0 right-0 h-1/2 bg-dusty-rose rounded-b"
               style={{
                 clipPath: 'polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%)',
               }}
@@ -80,7 +83,7 @@ export default function EnvelopeAnimation({ onComplete }: EnvelopeAnimationProps
 
             {/* Envelope flap */}
             <motion.div
-              className="absolute top-0 left-0 right-0 h-1/2 bg-magenta origin-top"
+              className="absolute top-0 left-0 right-0 h-1/2 bg-burgundy origin-top"
               style={{
                 clipPath: 'polygon(0 0, 50% 100%, 100% 0)',
               }}
@@ -94,7 +97,7 @@ export default function EnvelopeAnimation({ onComplete }: EnvelopeAnimationProps
 
           {/* Skip hint */}
           <motion.p
-            className="absolute bottom-8 text-white/50 text-sm"
+            className="absolute bottom-8 font-ui text-xs uppercase tracking-widest text-cream/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}

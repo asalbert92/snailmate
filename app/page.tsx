@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import EnvelopeAnimation from '@/components/EnvelopeAnimation'
-import FloatingElements from '@/components/FloatingElements'
 import Hero from '@/components/Hero'
 import Premise from '@/components/Premise'
 import Timeline from '@/components/Timeline'
@@ -31,40 +30,38 @@ export default function Home() {
   }
 
   return (
-    <main className="relative">
+    <main className="relative bg-warm-black">
       {showIntro && !hasSeenIntro && (
         <EnvelopeAnimation onComplete={handleIntroComplete} />
       )}
 
-      <FloatingElements />
+      <Hero />
+      <Premise />
+      <Timeline />
+      <Rules />
+      <CardPreview />
+      <ApplicationForm />
+      <FAQ />
 
-      <div className="relative z-10">
-        <Hero />
-        <Premise />
-        <Timeline />
-        <Rules />
-        <CardPreview />
-        <ApplicationForm />
-        <FAQ />
-
-        {/* Footer */}
-        <footer className="py-8 px-4 text-center border-t border-white/10">
-          <p className="text-white/50 text-sm">
+      {/* Footer */}
+      <footer className="py-12 px-6 bg-warm-black border-t border-cream/10">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="font-body text-cream/50 text-sm">
             A project by{' '}
             <a
               href="https://escargot.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-lime hover:underline"
+              className="text-gold hover:text-gold-light transition-colors"
             >
               Escargot
             </a>
           </p>
-          <p className="text-white/30 text-xs mt-2">
+          <p className="font-ui text-xs uppercase tracking-widest text-cream/30 mt-4">
             Valentine&apos;s Day 2026
           </p>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </main>
   )
 }

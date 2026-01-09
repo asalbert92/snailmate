@@ -6,93 +6,109 @@ import { useInView } from 'framer-motion'
 
 export default function CardPreview() {
   const [message, setMessage] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section className="py-20 px-4" ref={ref}>
-      <div className="max-w-4xl mx-auto">
+    <section className="py-32 md:py-48 bg-cream" ref={ref}>
+      <div className="max-w-4xl mx-auto px-6 md:px-12 lg:px-20">
+        {/* Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
         >
-          <h2 className="font-display text-4xl md:text-5xl mb-4 text-pink">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mb-4 text-warm-black">
             Write your first card
           </h2>
-          <p className="text-lg text-white/70">
+          <p className="font-body text-lg md:text-xl text-warm-black/60 italic">
             What would you say to a stranger?
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          {/* Input area */}
+        {/* Single immersive card */}
+        <motion.div
+          className="relative max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.8 }}
+        >
+          {/* Shadow card behind */}
+          <div className="absolute inset-0 card-paper transform rotate-2 translate-x-3 translate-y-3 opacity-40" />
+          <div className="absolute inset-0 card-paper transform -rotate-1 translate-x-1 translate-y-1 opacity-60" />
+
+          {/* Main card */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2 }}
+            className={`relative card-paper p-8 md:p-12 min-h-[400px] md:min-h-[500px] transition-all duration-500 ${
+              isFocused ? 'shadow-2xl scale-[1.02]' : 'shadow-lg'
+            }`}
+            animate={isFocused ? { rotate: 0 } : { rotate: -0.5 }}
           >
+            {/* Card lines */}
+            <div className="absolute inset-x-8 md:inset-x-12 top-24 bottom-8 pointer-events-none">
+              {[...Array(10)].map((_, i) => (
+                <div
+                  key={i}
+                  className="border-b border-burgundy/10 h-10 md:h-12"
+                />
+              ))}
+            </div>
+
+            {/* Decorative stamp area */}
+            <div className="absolute top-6 right-6 md:top-8 md:right-8 w-14 h-16 border-2 border-dashed border-dusty-rose/40 rounded flex items-center justify-center">
+              <motion.span
+                className="text-2xl md:text-3xl opacity-60"
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                💌
+              </motion.span>
+            </div>
+
+            {/* Date line */}
+            <div className="mb-8 md:mb-10">
+              <span className="font-ui text-xs uppercase tracking-widest text-dusty-rose">
+                February 2026
+              </span>
+            </div>
+
+            {/* Textarea - hidden but functional */}
             <textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value.slice(0, 300))}
+              onChange={(e) => setMessage(e.target.value.slice(0, 400))}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder="Dear stranger..."
-              className="w-full h-64 p-6 bg-white/10 backdrop-blur-sm rounded-lg text-white placeholder-white/50 resize-none border border-white/20 focus:border-lime transition-colors"
+              className="w-full h-64 md:h-80 bg-transparent resize-none font-script text-xl md:text-2xl text-burgundy placeholder-burgundy/40 leading-relaxed focus:outline-none relative z-10"
+              style={{ lineHeight: '2.5rem' }}
             />
-            <p className="text-right text-sm text-white/50 mt-2">
-              {message.length}/300
-            </p>
+
+            {/* Character count */}
+            <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8">
+              <span className="font-ui text-xs text-dusty-rose/60">
+                {message.length}/400
+              </span>
+            </div>
           </motion.div>
+        </motion.div>
 
-          {/* Card preview */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.3 }}
-            className="relative"
-          >
-            <motion.div
-              className="card-paper p-8 min-h-[300px] relative overflow-hidden"
-              whileHover={{ rotate: 2, scale: 1.02 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              {/* Card lines */}
-              <div className="absolute inset-x-8 top-20 bottom-8 pointer-events-none">
-                {[...Array(8)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="border-b border-purple/10 h-8"
-                  />
-                ))}
-              </div>
-
-              {/* Handwritten text */}
-              <p className="font-script text-2xl text-purple relative z-10 leading-relaxed whitespace-pre-wrap">
-                {message || 'Dear stranger...'}
-              </p>
-
-              {/* Decorative stamp */}
-              <div className="absolute top-4 right-4 w-12 h-14 border-2 border-dashed border-purple/30 rounded flex items-center justify-center">
-                <span className="text-2xl">💌</span>
-              </div>
-            </motion.div>
-
-            {/* Shadow card behind */}
-            <div className="absolute inset-0 card-paper -z-10 transform rotate-3 translate-x-2 translate-y-2 opacity-50" />
-          </motion.div>
-        </div>
-
+        {/* CTA */}
         <motion.div
-          className="text-center mt-8"
+          className="text-center mt-12 md:mt-16"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
         >
-          <p className="text-white/60 mb-4">
-            This could be real. {' '}
-            <a href="#apply" className="text-lime hover:underline">
-              Apply now.
-            </a>
+          <p className="font-body text-warm-black/60 mb-6 italic">
+            This could be real.
           </p>
+          <a
+            href="#apply"
+            className="inline-block font-ui text-sm uppercase tracking-widest text-burgundy border-b-2 border-burgundy pb-1 hover:text-burgundy-dark hover:border-burgundy-dark transition-colors"
+          >
+            Apply now
+          </a>
         </motion.div>
       </div>
     </section>

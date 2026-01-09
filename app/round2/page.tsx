@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import FloatingElements from '@/components/FloatingElements'
 import { submitToSheet } from '@/lib/submitToSheet'
 
 interface FormSection {
@@ -86,13 +85,9 @@ export default function Round2() {
     setIsSubmitting(false)
   }
 
-  const inputClasses = "w-full p-4 bg-white/10 backdrop-blur-sm rounded-lg text-white placeholder-white/50 border border-white/20 focus:border-lime transition-colors resize-none"
-  const labelClasses = "block text-sm font-medium text-white/80 mb-2"
-
   if (isSubmitted) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-4">
-        <FloatingElements />
+      <main className="min-h-screen flex items-center justify-center px-6 bg-warm-black">
         <motion.div
           className="text-center max-w-md relative z-10"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -105,8 +100,8 @@ export default function Round2() {
           >
             💌
           </motion.div>
-          <h2 className="font-display text-4xl mb-4 text-pink">Received.</h2>
-          <p className="text-white/70">
+          <h2 className="font-display text-4xl md:text-5xl mb-4 text-cream">Received.</h2>
+          <p className="font-body text-cream/70">
             We&apos;ll reach out soon if you&apos;re moving to the final round.
           </p>
         </motion.div>
@@ -115,8 +110,9 @@ export default function Round2() {
   }
 
   return (
-    <main className="min-h-screen py-20 px-4 relative">
-      <FloatingElements />
+    <main className="min-h-screen py-20 px-6 relative bg-warm-black">
+      {/* Film grain overlay */}
+      <div className="fixed inset-0 film-grain opacity-20 pointer-events-none" />
 
       <div className="max-w-2xl mx-auto relative z-10">
         <motion.div
@@ -124,11 +120,11 @@ export default function Round2() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="font-script text-5xl md:text-6xl text-pink mb-4">Round 2</h1>
-          <p className="font-display text-xl text-white/90 mb-2">
+          <h1 className="font-script text-5xl md:text-6xl text-dusty-rose mb-4">Round 2</h1>
+          <p className="font-display text-xl text-cream/90 mb-2">
             You made the first cut. Now we need to know you better.
           </p>
-          <p className="text-white/60 text-sm">
+          <p className="font-body text-cream/50 text-sm">
             This takes about 10-15 minutes. Be honest.
           </p>
         </motion.div>
@@ -140,7 +136,7 @@ export default function Round2() {
               key={index}
               onClick={() => setCurrentSection(index)}
               className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentSection ? 'bg-lime' : 'bg-white/20'
+                index === currentSection ? 'bg-gold' : 'bg-cream/20'
               }`}
             />
           ))}
@@ -155,14 +151,14 @@ export default function Round2() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h2 className="font-display text-2xl text-lime mb-6">
+              <h2 className="font-display text-2xl text-gold mb-6">
                 {sections[currentSection].title}
               </h2>
 
               <div className="space-y-6">
                 {sections[currentSection].questions.map((q) => (
                   <div key={q.id}>
-                    <label className={labelClasses}>
+                    <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
                       {q.question} {q.required && '*'}
                     </label>
 
@@ -170,23 +166,23 @@ export default function Round2() {
                       <textarea
                         value={formData[q.id] || ''}
                         onChange={(e) => handleChange(q.id, e.target.value)}
-                        className={`${inputClasses} h-24`}
+                        className="w-full p-4 bg-cream/5 backdrop-blur-sm rounded text-cream placeholder-cream/30 border border-cream/10 focus:border-gold transition-colors resize-none h-24 font-body"
                         required={q.required}
                       />
                     ) : (
                       <div className="flex flex-wrap gap-4">
                         {q.options?.map((option) => (
-                          <label key={option} className="flex items-center gap-2 cursor-pointer">
+                          <label key={option} className="flex items-center gap-2 cursor-pointer group">
                             <input
                               type="radio"
                               name={q.id}
                               value={option}
                               checked={formData[q.id] === option}
                               onChange={(e) => handleChange(q.id, e.target.value)}
-                              className="w-4 h-4 accent-lime"
+                              className="w-4 h-4 accent-gold"
                               required={q.required}
                             />
-                            <span className="text-white/80">{option}</span>
+                            <span className="font-body text-cream/80 group-hover:text-cream transition-colors">{option}</span>
                           </label>
                         ))}
                       </div>
@@ -203,7 +199,7 @@ export default function Round2() {
               type="button"
               onClick={() => setCurrentSection(prev => prev - 1)}
               disabled={currentSection === 0}
-              className="px-6 py-3 rounded-full border border-white/20 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/5 transition-colors"
+              className="px-6 py-3 rounded border border-cream/20 text-cream font-ui text-sm uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cream/5 transition-colors"
             >
               Back
             </button>
@@ -212,7 +208,7 @@ export default function Round2() {
               <button
                 type="button"
                 onClick={() => setCurrentSection(prev => prev + 1)}
-                className="btn-lime"
+                className="btn-primary"
               >
                 Next
               </button>
@@ -220,7 +216,7 @@ export default function Round2() {
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-lime disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
               >

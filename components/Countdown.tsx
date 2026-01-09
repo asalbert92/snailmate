@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState({
@@ -34,33 +33,27 @@ export default function Countdown() {
     return () => clearInterval(timer)
   }, [])
 
-  const TimeBlock = ({ value, label }: { value: number; label: string }) => (
-    <div className="flex flex-col items-center">
-      <motion.div
-        key={value}
-        initial={{ scale: 1.1, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 md:px-4 md:py-3 min-w-[60px] md:min-w-[80px]"
-      >
-        <span className="font-display text-2xl md:text-4xl font-bold">
-          {String(value).padStart(2, '0')}
-        </span>
-      </motion.div>
-      <span className="text-xs md:text-sm mt-1 text-white/70">{label}</span>
-    </div>
-  )
-
   return (
-    <div className="flex gap-2 md:gap-4 justify-center">
-      <TimeBlock value={timeLeft.days} label="days" />
-      <span className="text-2xl md:text-4xl font-display self-start mt-2 md:mt-3">:</span>
-      <TimeBlock value={timeLeft.hours} label="hours" />
-      <span className="text-2xl md:text-4xl font-display self-start mt-2 md:mt-3">:</span>
-      <TimeBlock value={timeLeft.minutes} label="minutes" />
-      <span className="text-2xl md:text-4xl font-display self-start mt-2 md:mt-3 hidden md:block">:</span>
-      <div className="hidden md:block">
-        <TimeBlock value={timeLeft.seconds} label="seconds" />
-      </div>
+    <div className="flex items-baseline gap-1 font-ui">
+      <span className="text-3xl md:text-4xl font-light text-cream tabular-nums">
+        {String(timeLeft.days).padStart(2, '0')}
+      </span>
+      <span className="text-sm text-cream/40 mr-3">d</span>
+
+      <span className="text-3xl md:text-4xl font-light text-cream tabular-nums">
+        {String(timeLeft.hours).padStart(2, '0')}
+      </span>
+      <span className="text-sm text-cream/40 mr-3">h</span>
+
+      <span className="text-3xl md:text-4xl font-light text-cream tabular-nums">
+        {String(timeLeft.minutes).padStart(2, '0')}
+      </span>
+      <span className="text-sm text-cream/40 mr-3">m</span>
+
+      <span className="text-3xl md:text-4xl font-light text-cream tabular-nums hidden md:inline">
+        {String(timeLeft.seconds).padStart(2, '0')}
+      </span>
+      <span className="text-sm text-cream/40 hidden md:inline">s</span>
     </div>
   )
 }
