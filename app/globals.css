@@ -79,6 +79,55 @@ body::before {
   50% { transform: scaleY(0.6); opacity: 0.2; }
 }
 
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes scrollReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll reveal animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Heart pulse animation for timeline */
+.heart-pulse {
+  animation: heartPulse 2s ease-in-out infinite;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .animate-fade-up,
+  .animate-fade-up-delay-1,
+  .animate-fade-up-delay-2,
+  .animate-fade-up-delay-3,
+  .animate-fade-up-delay-4,
+  .heart-pulse {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .animate-fade-up {
   opacity: 0;
   animation: fadeUp 1s ease forwards;
@@ -167,4 +216,37 @@ input:focus, textarea:focus, select:focus {
   html {
     font-size: 15px;
   }
+}
+
+/* Desktop responsive improvements */
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 140px;
+    padding-bottom: 140px;
+  }
+
+  .content-container {
+    max-width: 720px;
+  }
+
+  /* Rules grid layout on desktop */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 3rem;
+  }
+}
+
+/* Timeline item hover effect */
+.timeline-item {
+  transition: transform 0.3s ease, color 0.3s ease;
+  cursor: default;
+}
+
+.timeline-item:hover {
+  transform: translateX(4px);
+}
+
+.timeline-item:hover h3 {
+  color: var(--burgundy);
 }
