@@ -1,6 +1,5 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { submitToSheet } from '@/lib/submitToSheet'
 
@@ -73,7 +72,6 @@ export default function Round2() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Submit to Google Sheets
     const result = await submitToSheet('Round2', formData)
 
     if (result.success) {
@@ -87,47 +85,31 @@ export default function Round2() {
 
   if (isSubmitted) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-6 bg-warm-black">
-        <motion.div
-          className="text-center max-w-md relative z-10"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <motion.div
-            className="text-6xl mb-8"
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
-            💌
-          </motion.div>
+      <main className="min-h-screen flex items-center justify-center px-6 bg-ink">
+        <div className="text-center max-w-md">
+          <div className="text-6xl mb-8">💌</div>
           <h2 className="font-display text-4xl md:text-5xl mb-4 text-cream">Received.</h2>
-          <p className="font-body text-cream/70">
+          <p className="text-cream/70">
             We&apos;ll reach out soon if you&apos;re moving to the final round.
           </p>
-        </motion.div>
+        </div>
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen py-20 px-6 relative bg-warm-black">
-      {/* Film grain overlay */}
-      <div className="fixed inset-0 film-grain opacity-20 pointer-events-none" />
-
-      <div className="max-w-2xl mx-auto relative z-10">
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+    <main className="min-h-screen py-20 px-6 bg-ink">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
           <h1 className="font-script text-5xl md:text-6xl text-dusty-rose mb-4">Round 2</h1>
           <p className="font-display text-xl text-cream/90 mb-2">
             You made the first cut. Now we need to know you better.
           </p>
-          <p className="font-body text-cream/50 text-sm">
+          <p className="text-cream/50 text-sm">
             This takes about 10-15 minutes. Be honest.
           </p>
-        </motion.div>
+        </div>
 
         {/* Progress indicator */}
         <div className="flex justify-center gap-2 mb-8">
@@ -143,55 +125,47 @@ export default function Round2() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSection}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h2 className="font-display text-2xl text-gold mb-6">
-                {sections[currentSection].title}
-              </h2>
+          <div>
+            <h2 className="font-display text-2xl text-gold mb-6">
+              {sections[currentSection].title}
+            </h2>
 
-              <div className="space-y-6">
-                {sections[currentSection].questions.map((q) => (
-                  <div key={q.id}>
-                    <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
-                      {q.question} {q.required && '*'}
-                    </label>
+            <div className="space-y-6">
+              {sections[currentSection].questions.map((q) => (
+                <div key={q.id}>
+                  <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-3">
+                    {q.question} {q.required && '*'}
+                  </label>
 
-                    {q.type === 'textarea' ? (
-                      <textarea
-                        value={formData[q.id] || ''}
-                        onChange={(e) => handleChange(q.id, e.target.value)}
-                        className="w-full p-4 bg-cream/5 backdrop-blur-sm rounded text-cream placeholder-cream/30 border border-cream/10 focus:border-gold transition-colors resize-none h-24 font-body"
-                        required={q.required}
-                      />
-                    ) : (
-                      <div className="flex flex-wrap gap-4">
-                        {q.options?.map((option) => (
-                          <label key={option} className="flex items-center gap-2 cursor-pointer group">
-                            <input
-                              type="radio"
-                              name={q.id}
-                              value={option}
-                              checked={formData[q.id] === option}
-                              onChange={(e) => handleChange(q.id, e.target.value)}
-                              className="w-4 h-4 accent-gold"
-                              required={q.required}
-                            />
-                            <span className="font-body text-cream/80 group-hover:text-cream transition-colors">{option}</span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                  {q.type === 'textarea' ? (
+                    <textarea
+                      value={formData[q.id] || ''}
+                      onChange={(e) => handleChange(q.id, e.target.value)}
+                      className="w-full p-4 bg-cream/5 rounded text-cream placeholder-cream/30 border border-cream/10 focus:border-gold focus:outline-none transition-colors resize-none h-24"
+                      required={q.required}
+                    />
+                  ) : (
+                    <div className="flex flex-wrap gap-4">
+                      {q.options?.map((option) => (
+                        <label key={option} className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="radio"
+                            name={q.id}
+                            value={option}
+                            checked={formData[q.id] === option}
+                            onChange={(e) => handleChange(q.id, e.target.value)}
+                            className="w-4 h-4 accent-gold"
+                            required={q.required}
+                          />
+                          <span className="text-cream/80 group-hover:text-cream transition-colors">{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Navigation */}
           <div className="flex justify-between mt-8">
@@ -199,7 +173,7 @@ export default function Round2() {
               type="button"
               onClick={() => setCurrentSection(prev => prev - 1)}
               disabled={currentSection === 0}
-              className="px-6 py-3 rounded border border-cream/20 text-cream font-ui text-sm uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cream/5 transition-colors"
+              className="px-6 py-3 border border-cream/20 text-cream text-sm uppercase tracking-[0.1em] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cream/5 transition-colors"
             >
               Back
             </button>
@@ -208,20 +182,18 @@ export default function Round2() {
               <button
                 type="button"
                 onClick={() => setCurrentSection(prev => prev + 1)}
-                className="btn-primary"
+                className="px-6 py-3 bg-cream text-burgundy text-sm uppercase tracking-[0.1em] hover:bg-gold hover:text-ink transition-colors"
               >
                 Next
               </button>
             ) : (
-              <motion.button
+              <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                className="px-6 py-3 bg-cream text-burgundy text-sm uppercase tracking-[0.1em] hover:bg-gold hover:text-ink transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Submitting...' : 'Submit Round 2'}
-              </motion.button>
+              </button>
             )}
           </div>
         </form>

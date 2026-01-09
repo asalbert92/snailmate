@@ -1,8 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useRef } from 'react'
-import { useInView } from 'framer-motion'
+import { useState } from 'react'
 import { submitToSheet } from '@/lib/submitToSheet'
 
 interface FormDataFields {
@@ -19,8 +17,6 @@ interface FormDataFields {
 }
 
 export default function ApplicationForm() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<Partial<FormDataFields>>({})
@@ -63,7 +59,6 @@ export default function ApplicationForm() {
 
     setIsSubmitting(true)
 
-    // Submit to Google Sheets
     const result = await submitToSheet('Round1', formData)
 
     if (result.success) {
@@ -85,59 +80,36 @@ export default function ApplicationForm() {
 
   if (isSubmitted) {
     return (
-      <section id="apply" className="py-32 md:py-40 bg-cream" ref={ref}>
-        <motion.div
-          className="max-w-md mx-auto text-center px-6"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <motion.div
-            animate={{
-              y: [-10, -100, -200],
-              opacity: [1, 1, 0],
-              rotate: [0, -10, 10]
-            }}
-            transition={{ duration: 2, ease: 'easeOut' }}
-            className="text-6xl mb-8"
-          >
-            ✉️
-          </motion.div>
+      <div className="min-h-screen flex items-center justify-center px-6 bg-cream">
+        <div className="max-w-md text-center">
+          <div className="text-6xl mb-8">✉️</div>
           <h2 className="font-display text-4xl md:text-5xl mb-4 text-burgundy">Got it.</h2>
-          <p className="font-body text-warm-black/70">
+          <p className="text-ink-light">
             We&apos;ll be in touch within 48 hours if you&apos;re moving forward.
           </p>
-        </motion.div>
-      </section>
+        </div>
+      </div>
     )
   }
 
   return (
-    <section id="apply" className="py-32 md:py-40 bg-cream" ref={ref}>
-      <div className="max-w-2xl mx-auto px-6 md:px-12 lg:px-20">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-        >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mb-4 text-warm-black">
-            Think you could do it?
-          </h2>
-          <p className="font-body text-lg text-warm-black/60">
-            We&apos;re selecting two people for our first experiment.
+    <div className="min-h-screen py-20 px-6 bg-cream">
+      <div className="max-w-xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="font-display text-[clamp(2rem,5vw,3rem)] text-ink mb-4">
+            Apply to Snail Mate
+          </h1>
+          <p className="text-ink-light">
+            Takes 2 minutes. We&apos;ll be in touch within a week if you&apos;re selected.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.form
-          onSubmit={handleSubmit}
-          className="space-y-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {/* Name */}
-            <div className="input-underline">
-              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+            <div>
+              <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
                 Name *
               </label>
               <input
@@ -145,15 +117,15 @@ export default function ApplicationForm() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+                className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
                 placeholder="Your name"
               />
-              {errors.name && <p className="text-burgundy text-sm mt-2">{errors.name}</p>}
+              {errors.name && <p className="text-burgundy text-sm mt-1">{errors.name}</p>}
             </div>
 
             {/* Age */}
-            <div className="input-underline">
-              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+            <div>
+              <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
                 Age *
               </label>
               <input
@@ -161,18 +133,18 @@ export default function ApplicationForm() {
                 name="age"
                 value={formData.age}
                 onChange={handleChange}
-                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+                className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
                 placeholder="21-45"
                 min="21"
                 max="45"
               />
-              {errors.age && <p className="text-burgundy text-sm mt-2">{errors.age}</p>}
+              {errors.age && <p className="text-burgundy text-sm mt-1">{errors.age}</p>}
             </div>
           </div>
 
           {/* Pronouns */}
-          <div className="input-underline">
-            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+          <div>
+            <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
               Pronouns
             </label>
             <input
@@ -180,15 +152,15 @@ export default function ApplicationForm() {
               name="pronouns"
               value={formData.pronouns}
               onChange={handleChange}
-              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+              className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
               placeholder="e.g., she/her, he/him, they/them"
             />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+          <div className="grid md:grid-cols-2 gap-6">
             {/* Email */}
-            <div className="input-underline">
-              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+            <div>
+              <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
                 Email *
               </label>
               <input
@@ -196,15 +168,15 @@ export default function ApplicationForm() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+                className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
                 placeholder="your@email.com"
               />
-              {errors.email && <p className="text-burgundy text-sm mt-2">{errors.email}</p>}
+              {errors.email && <p className="text-burgundy text-sm mt-1">{errors.email}</p>}
             </div>
 
             {/* Phone */}
-            <div className="input-underline">
-              <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+            <div>
+              <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
                 Phone *
               </label>
               <input
@@ -212,16 +184,16 @@ export default function ApplicationForm() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+                className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
                 placeholder="(555) 555-5555"
               />
-              {errors.phone && <p className="text-burgundy text-sm mt-2">{errors.phone}</p>}
+              {errors.phone && <p className="text-burgundy text-sm mt-1">{errors.phone}</p>}
             </div>
           </div>
 
           {/* Occupation */}
-          <div className="input-underline">
-            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+          <div>
+            <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
               What do you do? *
             </label>
             <input
@@ -229,28 +201,28 @@ export default function ApplicationForm() {
               name="occupation"
               value={formData.occupation}
               onChange={handleChange}
-              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+              className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
               placeholder="Your job, passion, or how you spend your days"
             />
-            {errors.occupation && <p className="text-burgundy text-sm mt-2">{errors.occupation}</p>}
+            {errors.occupation && <p className="text-burgundy text-sm mt-1">{errors.occupation}</p>}
           </div>
 
           {/* Interest */}
-          <div className="input-underline">
-            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+          <div>
+            <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
               Why does this interest you? *
             </label>
             <textarea
               name="interest"
               value={formData.interest}
               onChange={handleChange}
-              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30 resize-none h-32"
+              className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors resize-none h-28"
               placeholder="Be honest. We're looking for genuine people."
               maxLength={500}
             />
-            <div className="flex justify-between mt-2">
+            <div className="flex justify-between mt-1">
               {errors.interest && <p className="text-burgundy text-sm">{errors.interest}</p>}
-              <p className="text-right text-sm text-dusty-rose ml-auto">
+              <p className="text-sm text-dusty-rose ml-auto">
                 {formData.interest.length}/500
               </p>
             </div>
@@ -258,39 +230,39 @@ export default function ApplicationForm() {
 
           {/* Availability */}
           <div>
-            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-4">
+            <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-3">
               Are you available for filming Feb 10-14, 2026? *
             </label>
-            <div className="flex gap-8">
-              <label className="flex items-center gap-3 cursor-pointer group">
+            <div className="flex gap-6">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="radio"
                   name="available"
                   value="yes"
                   checked={formData.available === 'yes'}
                   onChange={handleChange}
-                  className="w-5 h-5 accent-burgundy"
+                  className="w-4 h-4 accent-burgundy"
                 />
-                <span className="font-body text-warm-black group-hover:text-burgundy transition-colors">Yes</span>
+                <span className="text-ink">Yes</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="radio"
                   name="available"
                   value="no"
                   checked={formData.available === 'no'}
                   onChange={handleChange}
-                  className="w-5 h-5 accent-burgundy"
+                  className="w-4 h-4 accent-burgundy"
                 />
-                <span className="font-body text-warm-black group-hover:text-burgundy transition-colors">No</span>
+                <span className="text-ink">No</span>
               </label>
             </div>
-            {errors.available && <p className="text-burgundy text-sm mt-2">{errors.available}</p>}
+            {errors.available && <p className="text-burgundy text-sm mt-1">{errors.available}</p>}
           </div>
 
           {/* Instagram */}
-          <div className="input-underline">
-            <label className="block font-ui text-xs uppercase tracking-widest text-dusty-rose mb-3">
+          <div>
+            <label className="block text-xs uppercase tracking-[0.1em] text-dusty-rose mb-2">
               Instagram handle (optional)
             </label>
             <input
@@ -298,37 +270,23 @@ export default function ApplicationForm() {
               name="instagram"
               value={formData.instagram}
               onChange={handleChange}
-              className="w-full bg-transparent border-b-2 border-warm-black/20 pb-2 text-warm-black font-body text-lg focus:outline-none focus:border-burgundy transition-colors placeholder-warm-black/30"
+              className="w-full bg-transparent border-b border-ink/20 pb-2 text-ink focus:border-burgundy transition-colors"
               placeholder="@yourusername"
             />
           </div>
 
           {/* Submit Button */}
-          <div className="pt-8">
-            <motion.button
+          <div className="pt-4">
+            <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-              whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+              className="w-full py-4 px-8 bg-burgundy text-cream font-body text-sm uppercase tracking-[0.1em] hover:bg-burgundy-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? (
-                <span className="flex items-center justify-center gap-3">
-                  <motion.span
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1 }}
-                  >
-                    ✉️
-                  </motion.span>
-                  Sending...
-                </span>
-              ) : (
-                'Send It'
-              )}
-            </motion.button>
+              {isSubmitting ? 'Sending...' : 'Submit Application'}
+            </button>
           </div>
-        </motion.form>
+        </form>
       </div>
-    </section>
+    </div>
   )
 }
