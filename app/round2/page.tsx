@@ -1,0 +1,235 @@
+'use client'
+
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import FloatingElements from '@/components/FloatingElements'
+import { submitToSheet } from '@/lib/submitToSheet'
+
+interface FormSection {
+  title: string
+  questions: {
+    id: string
+    question: string
+    type: 'textarea' | 'radio'
+    options?: string[]
+    required: boolean
+  }[]
+}
+
+const sections: FormSection[] = [
+  {
+    title: 'About You',
+    questions: [
+      { id: 'friendDescribe', question: 'How would your closest friend describe you?', type: 'textarea', required: true },
+      { id: 'exDescribe', question: 'How would an ex describe you? Be honest.', type: 'textarea', required: true },
+      { id: 'weirdlyProud', question: "What's something you're weirdly proud of?", type: 'textarea', required: true },
+      { id: 'workingOn', question: "What's something you're working on about yourself?", type: 'textarea', required: true },
+      { id: 'alone', question: "What do you do when you're alone and no one's watching?", type: 'textarea', required: true },
+      { id: 'hill', question: "What's a hill you'll die on?", type: 'textarea', required: true },
+      { id: 'laugh', question: 'What makes you laugh hardest?', type: 'textarea', required: true },
+    ]
+  },
+  {
+    title: 'How You Connect',
+    questions: [
+      { id: 'showCare', question: 'How do you show someone you care about them?', type: 'textarea', required: true },
+      { id: 'receiveAffection', question: 'How do you like to receive affection?', type: 'textarea', required: true },
+      { id: 'sayOrShow', question: 'Are you more likely to say how you feel or show how you feel?', type: 'radio', options: ['Say', 'Show', 'Both equally'], required: true },
+      { id: 'openUp', question: 'Do you open up quickly or does it take time?', type: 'radio', options: ['Quickly', 'Takes time', 'Depends'], required: true },
+      { id: 'feelSeen', question: 'What makes you feel seen in a relationship?', type: 'textarea', required: true },
+      { id: 'conflict', question: 'How do you handle conflict?', type: 'textarea', required: true },
+    ]
+  },
+  {
+    title: "What You're Looking For",
+    questions: [
+      { id: 'needQuality', question: "What's one quality you need in a partner?", type: 'textarea', required: true },
+      { id: 'instantNo', question: "What's one thing that's an instant no?", type: 'textarea', required: true },
+      { id: 'similar', question: 'Do you want someone similar to you or someone who balances you out?', type: 'radio', options: ['Similar', 'Balances', 'No preference'], required: true },
+      { id: 'goodRelationship', question: 'What does a good relationship look like to you?', type: 'textarea', required: true },
+    ]
+  },
+  {
+    title: 'The Deeper Stuff',
+    questions: [
+      { id: 'want', question: "What's something you want but rarely say out loud?", type: 'textarea', required: true },
+      { id: 'scares', question: 'What scares you about relationships?', type: 'textarea', required: true },
+      { id: 'excites', question: 'What excites you about relationships?', type: 'textarea', required: true },
+      { id: 'learned', question: 'What have you learned from past relationships?', type: 'textarea', required: true },
+    ]
+  }
+]
+
+export default function Round2() {
+  const [formData, setFormData] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [currentSection, setCurrentSection] = useState(0)
+
+  const handleChange = (id: string, value: string) => {
+    setFormData(prev => ({ ...prev, [id]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // Submit to Google Sheets
+    const result = await submitToSheet('Round2', formData)
+
+    if (result.success) {
+      setIsSubmitted(true)
+    } else {
+      alert('Something went wrong. Please try again.')
+    }
+
+    setIsSubmitting(false)
+  }
+
+  const inputClasses = "w-full p-4 bg-white/10 backdrop-blur-sm rounded-lg text-white placeholder-white/50 border border-white/20 focus:border-lime transition-colors resize-none"
+  const labelClasses = "block text-sm font-medium text-white/80 mb-2"
+
+  if (isSubmitted) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-4">
+        <FloatingElements />
+        <motion.div
+          className="text-center max-w-md relative z-10"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <motion.div
+            className="text-6xl mb-8"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            💌
+          </motion.div>
+          <h2 className="font-display text-4xl mb-4 text-pink">Received.</h2>
+          <p className="text-white/70">
+            We&apos;ll reach out soon if you&apos;re moving to the final round.
+          </p>
+        </motion.div>
+      </main>
+    )
+  }
+
+  return (
+    <main className="min-h-screen py-20 px-4 relative">
+      <FloatingElements />
+
+      <div className="max-w-2xl mx-auto relative z-10">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="font-script text-5xl md:text-6xl text-pink mb-4">Round 2</h1>
+          <p className="font-display text-xl text-white/90 mb-2">
+            You made the first cut. Now we need to know you better.
+          </p>
+          <p className="text-white/60 text-sm">
+            This takes about 10-15 minutes. Be honest.
+          </p>
+        </motion.div>
+
+        {/* Progress indicator */}
+        <div className="flex justify-center gap-2 mb-8">
+          {sections.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSection(index)}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === currentSection ? 'bg-lime' : 'bg-white/20'
+              }`}
+            />
+          ))}
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSection}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h2 className="font-display text-2xl text-lime mb-6">
+                {sections[currentSection].title}
+              </h2>
+
+              <div className="space-y-6">
+                {sections[currentSection].questions.map((q) => (
+                  <div key={q.id}>
+                    <label className={labelClasses}>
+                      {q.question} {q.required && '*'}
+                    </label>
+
+                    {q.type === 'textarea' ? (
+                      <textarea
+                        value={formData[q.id] || ''}
+                        onChange={(e) => handleChange(q.id, e.target.value)}
+                        className={`${inputClasses} h-24`}
+                        required={q.required}
+                      />
+                    ) : (
+                      <div className="flex flex-wrap gap-4">
+                        {q.options?.map((option) => (
+                          <label key={option} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name={q.id}
+                              value={option}
+                              checked={formData[q.id] === option}
+                              onChange={(e) => handleChange(q.id, e.target.value)}
+                              className="w-4 h-4 accent-lime"
+                              required={q.required}
+                            />
+                            <span className="text-white/80">{option}</span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="flex justify-between mt-8">
+            <button
+              type="button"
+              onClick={() => setCurrentSection(prev => prev - 1)}
+              disabled={currentSection === 0}
+              className="px-6 py-3 rounded-full border border-white/20 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/5 transition-colors"
+            >
+              Back
+            </button>
+
+            {currentSection < sections.length - 1 ? (
+              <button
+                type="button"
+                onClick={() => setCurrentSection(prev => prev + 1)}
+                className="btn-lime"
+              >
+                Next
+              </button>
+            ) : (
+              <motion.button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-lime disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Round 2'}
+              </motion.button>
+            )}
+          </div>
+        </form>
+      </div>
+    </main>
+  )
+}
