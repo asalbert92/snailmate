@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 export default function CTA() {
   return (
     <section className="py-28 md:py-32 px-6 bg-burgundy text-cream text-center">
@@ -15,12 +13,14 @@ export default function CTA() {
       </div>
 
       {/* Button */}
-      <Link
-        href="/apply"
+      <a
+        href="https://l0tpc2x5vz2.typeform.com/snailmate"
+        target="_blank"
+        rel="noopener noreferrer"
         className="btn-primary"
       >
         Apply Now
-      </Link>
+      </a>
 
       {/* Deadline */}
       <p className="mt-8 text-[0.8rem] tracking-[0.1em] uppercase opacity-60">
